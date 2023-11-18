@@ -1,0 +1,27 @@
+export const open = async ({ onSuccess }: WorldCoinArgs) => {
+  const [{ createRoot }, React, { IDKitWidget, useIDKit }] = await Promise.all([
+    import('react-dom/client'),
+    import('react'),
+    import('@worldcoin/idkit'),
+  ]);
+  const { useEffect } = React;
+
+  const worldCoinEl = document.createElement('div');
+  document.body.append(worldCoinEl);
+
+  const root = createRoot(worldCoinEl);
+  root.render(
+    React.createElement(() => {
+      const { setOpen } = useIDKit();
+      useEffect(() => {
+        setOpen(true);
+      }, []);
+
+      return React.createElement(IDKitWidget, {
+        app_id: APP_ID,
+        action: ACTION,
+        onSuccess,
+      });
+    })
+  );
+};
